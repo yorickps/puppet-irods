@@ -3,6 +3,10 @@
 1
 <%- if @db_vendor == 'postgres' -%>
 PostgreSQL
+<%- elsif @db_vendor == 'mysql' -%>
+MySQL
+<%- else -%>
+<%= @db_vendor %>
 <%- end -%>
 <%= scope['irods::provider::db_srv_host'] %>
 <%= scope['irods::provider::db_srv_port'] %>
