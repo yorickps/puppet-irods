@@ -15,6 +15,26 @@ define irods::lib::setup (
   $setup_py        = '/var/lib/irods/scripts/setup_irods.py'
   $db_vendor       = $::irods::provider::db_vendor
 
+  # Some patches to make mysql work as a backend
+  $fix_sql_files = ['/var/lib/irods/packaging/sql/icatSysTables.sql', '/var/lib/irods/packaging/sql/mysql_functions.sql']
+
+  $fix_sql_files.each |String $file| {
+    file_line { "storage_engine_${file}":
+      path   => $file,
+      line   => 'SET SESSION default_storage_engine=\'InnoDB\';',
+      match  => '^SET SESSION .*storage_engine=.*',
+      before => Exec['irods-provider-setup'],
+    }
+  }
+
+  # Bail out if database is already set up
+  file_line { 'bail_out_database_exists':
+    path   => '/var/lib/irods/scripts/irods/database_interface.py',
+    line   => 'if database_connect.irods_tables_in_database(irods_config, cursor): return',
+    after  => 'try:',
+    before => Exec['irods-provider-setup'],
+  }
+
   file { $staging_dir:
     ensure => 'directory',
   } ->
