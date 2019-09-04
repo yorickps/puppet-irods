@@ -30,8 +30,8 @@ define irods::lib::setup (
   # Bail out if database is already set up
   file_line { 'bail_out_database_exists':
     path   => '/var/lib/irods/scripts/irods/database_interface.py',
-    line   => 'if database_connect.irods_tables_in_database(irods_config, cursor): return',
-    after  => 'try:',
+    line   => '                if database_connect.irods_tables_in_database(irods_config, cursor): return',
+    after  => '^            try:',
     before => Exec['irods-provider-setup'],
   }
 
@@ -48,7 +48,7 @@ define irods::lib::setup (
 
   exec { 'irods-provider-setup':
     path        => '/bin:/usr/bin:/sbin:/usr/sbin',
-    command     => "/usr/bin/nsenter --ns=/root/irods-ns-uts python ${setup_py} < ${staging_dir}/${setup_rsp_file} > ${$staging_dir}/${setup_log_file} 2>&1",
+    command     => "/usr/bin/nsenter --uts=/root/irods-ns-uts python ${setup_py} < ${staging_dir}/${setup_rsp_file} > ${$staging_dir}/${setup_log_file} 2>&1",
     unless      => 'test -f /etc/irods/server_config.json',
     require     => Service['irods-namespace'],
   }
