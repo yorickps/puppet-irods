@@ -7,12 +7,16 @@
 class irods::service {
 
   include irods::globals
+  include irods::namespace
 
   $irodsctl_stop = "su irods -c '${::irods::globals::irods_home}/irodsctl stop' 2>&1"
 
-  service { 'irods':
-    ensure => 'running',
-    start  => "${irodsctl_stop} && systemctl start irods",
-    stop   => "${irodsctl_stop} && systemctl stop irods",
+  systemd::unit_file { 'irods.service':
+    source => "puppet:///modules/${module_name}/irods.service",
+  }
+  -> service { 'irods':
+    ensure  => 'running',
+    start   => "${irodsctl_stop} && systemctl start irods",
+    require => Service['irods-namespace'],
   }
 }

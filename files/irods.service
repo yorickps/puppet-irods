@@ -1,0 +1,16 @@
+[Unit]
+SourcePath=/etc/rc.d/init.d/irods
+Description=Manages the iRODS service
+After=network-online.target irods-namespace.service
+Wants=network-online.target irods-namespace.service
+
+[Service]
+Type=forking
+Restart=no
+TimeoutSec=5min
+IgnoreSIGPIPE=no
+KillMode=process
+GuessMainPID=no
+RemainAfterExit=yes
+ExecStart=/usr/bin/nsenter --uts=/root/irods-ns-uts /etc/rc.d/init.d/irods start
+ExecStop=/usr/bin/nsenter --uts=/root/irods-ns-uts /etc/rc.d/init.d/irods stop

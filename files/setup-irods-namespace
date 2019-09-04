@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PATH=/usr/bin:/usr/sbin
+
+if [ -f /etc/sysconfig/irods-namespace ]; then
+  source /etc/sysconfig/irods-namespace
+fi
+
+if [ -z "$IRODS_HOSTNAME" ]; then
+  IRODS_HOSTNAME=$(hostname)
+fi
+
+touch /root/irods-ns-uts
+unshare --uts bash -c 'mount -o bind /proc/$$/ns/uts /root/irods-ns-uts; hostname $IRODS_HOSTNAME'

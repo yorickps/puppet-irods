@@ -1,0 +1,13 @@
+[Unit]
+Description=IRODS namespace setup
+After=local-fs.target network-online.target
+Wants=local-fs.target network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/setup-irods-namespace
+ExecStop=/usr/bin/umount /root/irods-ns-uts
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
