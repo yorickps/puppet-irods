@@ -1,16 +1,17 @@
 # installs provider server
 class irods::provider (
-  String                            $core_version     = $irods::params::core_version,
-  Enum['postgres','oracle','mysql'] $db_vendor        = $irods::params::db_vendor,
-  String                            $db_name          = $irods::params::db_name,
-  String                            $db_user          = $irods::params::db_user,
-  String                            $db_password      = $irods::params::db_password,
-  String                            $db_srv_host      = $irods::params::db_srv_host,
-  String                            $db_srv_port      = $irods::params::db_srv_port,
-  Boolean                           $do_setup         = $irods::params::do_setup,
-  Boolean                           $use_ssl          = $irods::globals::use_ssl,
-  Array                             $re_rulebase_set  = $irods::params::re_rulebase_set,
-  Boolean                           $install_dev_pkgs = $irods::globals::install_dev_pkgs,
+  String                            $core_version            = $irods::params::core_version,
+  Enum['postgres','oracle','mysql'] $db_vendor               = $irods::params::db_vendor,
+  String                            $db_name                 = $irods::params::db_name,
+  String                            $db_user                 = $irods::params::db_user,
+  String                            $db_password             = $irods::params::db_password,
+  String                            $db_srv_host             = $irods::params::db_srv_host,
+  String                            $db_srv_port             = $irods::params::db_srv_port,
+  Boolean                           $do_setup                = $irods::params::do_setup,
+  Boolean                           $use_ssl                 = $irods::globals::use_ssl,
+  Array                             $re_rulebase_set         = $irods::params::re_rulebase_set,
+  Boolean                           $install_dev_pkgs        = $irods::globals::install_dev_pkgs,
+  String                            $package_install_options = $irods::globals::package_install_options,
 ) inherits irods::params {
 
   include ::irods::service
@@ -33,8 +34,9 @@ class irods::provider (
   }
 
   irods::lib::install { 'provider':
-    packages     => $packages,
-    core_version => $core_version,
+    packages                => $packages,
+    core_version            => $core_version,
+    package_install_options => $package_install_options,
   }
 
   if $use_ssl {

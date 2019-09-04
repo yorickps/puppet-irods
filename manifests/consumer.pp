@@ -1,9 +1,10 @@
 # installs consumer server
 class irods::consumer (
-  String    $core_version     = $irods::params::core_version,
-  Boolean   $do_setup         = $irods::params::do_setup,
-  Boolean   $use_ssl          = $irods::globals::use_ssl,
-  Boolean   $install_dev_pkgs = $irods::globals::install_dev_pkgs,
+  String    $core_version            = $irods::params::core_version,
+  Boolean   $do_setup                = $irods::params::do_setup,
+  Boolean   $use_ssl                 = $irods::globals::use_ssl,
+  Boolean   $install_dev_pkgs        = $irods::globals::install_dev_pkgs,
+  String    $package_install_options = $irods::globals::package_install_options,
 ) inherits irods::params {
 
   include ::irods::service
@@ -21,8 +22,9 @@ class irods::consumer (
   }
 
   irods::lib::install { 'consumer':
-    packages     => $packages,
-    core_version => $core_version,
+    packages                => $packages,
+    core_version            => $core_version,
+    package_install_options => $package_install_options,
   }
 
   if $use_ssl {
