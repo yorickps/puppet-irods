@@ -3,9 +3,10 @@
 # installed at at time - handling cases, for example, when an
 # irods::client node is changed to a irods::resource node.
 define irods::lib::install (
-  $packages     = undef,
-  $core_version = $irods::params::core_version,
-  $manage_repo  = $irods::params::manage_repo,
+  $packages                = undef,
+  $core_version            = $irods::params::core_version,
+  $manage_repo             = $irods::params::manage_repo,
+  $package_install_options = '',
 ) {
 
   if is_array($packages) {
@@ -33,7 +34,8 @@ define irods::lib::install (
     ensure => absent,
   } ->
   package { $install_pkgs:
-    ensure => $core_version,
+    ensure          => $core_version,
+    install_options => $package_install_options,
   }
 
 }

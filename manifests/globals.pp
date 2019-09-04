@@ -22,6 +22,7 @@ class irods::globals (
   $ssl_certificate_key_file_source   = '',
   $core_version                      = '4.2.0',
   $install_dev_pkgs                  = true,
+  $package_install_options           = '',
 ) {
 
   include ::irods::contrib::ireinit
