@@ -11,4 +11,5 @@ if [ -z "$IRODS_HOSTNAME" ]; then
 fi
 
 touch /root/irods-ns-uts
-unshare --uts bash -c 'mount -o bind /proc/$$/ns/uts /root/irods-ns-uts; hostname $IRODS_HOSTNAME'
+unshare --uts bash -c 'mount -o bind /proc/$$/ns/uts /root/irods-ns-uts'
+nsenter --uts=/root/irods-ns-uts hostname $IRODS_HOSTNAME
