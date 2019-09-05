@@ -4,8 +4,10 @@
 # Reloads irods server on change.
 #
 define irods::lib::ssl (
-  $ssl_certificate_chain_file_source = '',
-  $ssl_certificate_key_file_source   = '',
+  $ssl_certificate_chain = undef,
+  $ssl_certificate_key   = undef,
+  $ssl_certificate_chain_file_source = undef,
+  $ssl_certificate_key_file_source   = undef,
 ) {
 
   include ::irods::service
