@@ -10,9 +10,9 @@ class irods::consumer (
   include ::irods::service
 
   contain ::irods::consumer::setup
-  Irods::Lib::Install['consumer'] ~>
-  Class['irods::consumer::setup'] ->
-  Irods::Lib::Ssl['consumer']
+  Irods::Lib::Install['consumer']
+  ~> Class['irods::consumer::setup']
+  -> Irods::Lib::Ssl['consumer']
 
   $min_packages = ['irods-server', 'irods-icommands']
   if $install_dev_pkgs {
@@ -31,6 +31,8 @@ class irods::consumer (
     irods::lib::ssl { 'consumer':
       ssl_certificate_chain_file_source => $irods::globals::ssl_certificate_chain_file_source,
       ssl_certificate_key_file_source   => $irods::globals::ssl_certificate_key_file_source,
+      ssl_certificate_chain             => $irods::globals::ssl_certificate_chain,
+      ssl_certificate_key               => $irods::globals::ssl_certificate_key,
     }
   }
 

@@ -32,8 +32,8 @@ define irods::lib::install (
 
   package { $rm_pkgs:
     ensure => absent,
-  } ->
-  package { $install_pkgs:
+  }
+  -> package { $install_pkgs:
     ensure          => $core_version,
     install_options => $package_install_options,
   }

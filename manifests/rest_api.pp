@@ -17,14 +17,14 @@ class irods::rest_api (
   include ::docker
 
   docker::run { 'irods-api':
-    image   => "$rest_image",
-    ports   => ["$rest_port:8080"],
+    image   => $rest_image,
+    ports   => ["${rest_port}:8080"],
     volumes => ['/etc/irods-ext:/etc/irods-ext', '/etc/irods/ssl:/tmp/cert'],
     *       => $extra_docker_args,
-    require => [ 
-      File['/etc/irods-ext/irods-rest.properties'], 
+    require => [
+      File['/etc/irods-ext/irods-rest.properties'],
       Class['irods::provider']
-    ]
+    ],
   }
 
   # rest config
@@ -34,7 +34,7 @@ class irods::rest_api (
 
   file {'/etc/irods-ext/irods-rest.properties':
     content => template('irods/irods-rest.properties.erb'),
-    notify   => Docker::Run['irods-api'],
+    notify  => Docker::Run['irods-api'],
   }
 
 }

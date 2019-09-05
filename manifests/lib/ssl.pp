@@ -40,22 +40,29 @@ define irods::lib::ssl (
 
   file { '/etc/irods/ssl':
     ensure  => 'directory',
-  } ->
+  }
 
   file { '/etc/irods/ssl/server.key':
-    ensure => 'file',
-    source => $ssl_certificate_key_file_source,
-  } ->
+    ensure  => 'file',
+    content => $ssl_certificate_key,
+    source  => $ssl_certificate_key_file_source,
+    require => File['/etc/irods/ssl'],
+    notify  => Service['irods'],
+  }
 
   file { '/etc/irods/ssl/server.crt':
-    ensure => 'file',
-    source => $ssl_certificate_chain_file_source,
-  } ->
+    ensure  => 'file',
+    content => $ssl_certificate_chain,
+    source  => $ssl_certificate_chain_file_source,
+    require => File['/etc/irods/ssl'],
+    notify  => Service['irods'],
+  }
 
   exec { 'generate /etc/irods/ssl/dhparams.pem':
     path    => ['/usr/local/bin', '/bin', '/usr/bin'],
     command => 'openssl dhparam -2 -out /etc/irods/ssl/dhparams.pem 2048',
     user    => $irods::globals::srv_acct,
+    require => File['/etc/irods/ssl'],
     creates => '/etc/irods/ssl/dhparams.pem',
     notify  => Service['irods'],
   }

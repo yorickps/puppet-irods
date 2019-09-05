@@ -37,20 +37,20 @@ define irods::lib::setup (
 
   file { $staging_dir:
     ensure => 'directory',
-  } ->
+  }
 
   # Response file as input to the setup script.
-  file { "${staging_dir}/${setup_rsp_file}":
+  -> file { "${staging_dir}/${setup_rsp_file}":
     ensure  => 'file',
     content => template("irods/${setup_rsp_tmpl}"),
     mode    => '0600',
-  } ->
+  }
 
-  exec { 'irods-provider-setup':
-    path        => '/bin:/usr/bin:/sbin:/usr/sbin',
-    command     => "/usr/bin/nsenter --uts=/root/irods-ns-uts python ${setup_py} < ${staging_dir}/${setup_rsp_file} > ${$staging_dir}/${setup_log_file} 2>&1",
-    unless      => 'test -f /etc/irods/server_config.json',
-    require     => Service['irods-namespace'],
+  -> exec { 'irods-provider-setup':
+    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+    command => "/usr/bin/nsenter --uts=/root/irods-ns-uts python ${setup_py} < ${staging_dir}/${setup_rsp_file} > ${$staging_dir}/${setup_log_file} 2>&1",
+    unless  => 'test -f /etc/irods/server_config.json',
+    require => Service['irods-namespace'],
   }
 
 }
