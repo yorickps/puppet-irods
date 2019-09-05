@@ -19,12 +19,12 @@ class irods::provider (
   include ::irods::provider::python_plugin_config
 
   contain ::irods::provider::setup
-  
-  Irods::Lib::Install['provider'] ~>
-  Class['irods::provider::setup'] ->
-  Class['irods::provider::re_rulebase_set'] ->
-  Class['irods::provider::python_plugin_config'] ->
-  Irods::Lib::Ssl['provider']
+
+  Irods::Lib::Install['provider']
+  ~> Class['irods::provider::setup']
+  -> Class['irods::provider::re_rulebase_set']
+  -> Class['irods::provider::python_plugin_config']
+  -> Irods::Lib::Ssl['provider']
 
   $min_packages = ['irods-server', 'irods-runtime', 'irods-icommands', "irods-database-plugin-${db_vendor}", "irods-rule-engine-plugin-python"]
   if $install_dev_pkgs {
@@ -43,6 +43,8 @@ class irods::provider (
     irods::lib::ssl { 'provider':
       ssl_certificate_chain_file_source => $irods::globals::ssl_certificate_chain_file_source,
       ssl_certificate_key_file_source   => $irods::globals::ssl_certificate_key_file_source,
+      ssl_certificate_chain             => $irods::globals::ssl_certificate_chain,
+      ssl_certificate_key               => $irods::globals::ssl_certificate_key,
     }
   }
 

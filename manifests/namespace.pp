@@ -7,10 +7,10 @@ class irods::namespace (
   include irods::globals
 
   file { '/etc/sysconfig/irods-namespace':
-    ensure => file,
+    ensure  => file,
     content => "IRODS_HOSTNAME=${irods_hostname}\n",
-    owner => 'root',
-    group => 'root',
+    owner   => 'root',
+    group   => 'root',
   }
   -> file { '/usr/local/sbin/setup-irods-namespace':
     ensure => file,
