@@ -8,6 +8,7 @@ define irods::lib::setup (
   $setup_rsp_file = undef,
   $setup_rsp_tmpl = undef,
   $setup_log_file = 'irods_setup.log',
+  $fix_sql        = false,
 ) {
   include irods::namespace
 
@@ -15,15 +16,17 @@ define irods::lib::setup (
   $setup_py        = '/var/lib/irods/scripts/setup_irods.py'
   $db_vendor       = $::irods::provider::db_vendor
 
-  # Some patches to make mysql work as a backend
-  $fix_sql_files = ['/var/lib/irods/packaging/sql/icatSysTables.sql', '/var/lib/irods/packaging/sql/mysql_functions.sql']
+  if $fix_sql {
+    # Some patches to make mysql work as a backend
+    $fix_sql_files = ['/var/lib/irods/packaging/sql/icatSysTables.sql', '/var/lib/irods/packaging/sql/mysql_functions.sql']
 
-  $fix_sql_files.each |String $file| {
-    file_line { "storage_engine_${file}":
-      path   => $file,
-      line   => 'SET SESSION default_storage_engine=\'InnoDB\';',
-      match  => '^SET SESSION .*storage_engine=.*',
-      before => Exec['irods-provider-setup'],
+    $fix_sql_files.each |String $file| {
+      file_line { "storage_engine_${file}":
+        path   => $file,
+        line   => 'SET SESSION default_storage_engine=\'InnoDB\';',
+        match  => '^SET SESSION .*storage_engine=.*',
+        before => Exec['irods-provider-setup'],
+      }
     }
   }
 
