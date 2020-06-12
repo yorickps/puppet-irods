@@ -23,6 +23,7 @@ class irods::globals (
   $ssl_certificate_chain             = undef,
   $ssl_certificate_key               = undef,
   $core_version                      = '4.2.0',
+  $engine_plugin_release             = '',
   $install_dev_pkgs                  = true,
   $package_install_options           = '',
 ) {
