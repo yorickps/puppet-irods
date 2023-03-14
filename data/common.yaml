@@ -1,0 +1,55 @@
+---
+# params
+irods::db_vendor: postgres # or oracle or mysql
+irods::db_plugin_version: '1.8-0' # not implemented
+irods::db_name: 'ICAT'
+irods::db_user: "%{lookup('irods::globals::srv_acct')}"
+irods::db_password: 'irodspassword'
+irods::db_srv_host: 'localhost'
+irods::db_srv_port: '5432'
+irods::db_password_salt: 'irodsPKey'
+irods::do_setup: true
+
+irods::re_rulebase_set:
+ - 'core'
+irods::server_config_json: '/etc/irods/server_config.json'
+
+# install and use RENCI package repository
+# (only available for iRODS >= 4.2)
+irods::manage_repo: true
+
+# Only one database plugin can be installed at a time. See the
+# irods::lib::install define type for how this list is used to ensure one of
+# each is installed and the others are absent. This list is ordered so
+# dependencies are handled first during any uninstallations.
+irods::core_packages:
+  - 'irods-database-plugin-mysql' 
+  - 'irods-database-plugin-oracle' 
+  - 'irods-database-plugin-postgres'
+  - 'irods-rule-engine-plugin-python'
+  - 'irods-devel'
+  - 'irods-server'
+  - 'irods-icommands'
+
+# globals
+irods::ctrl_plane_key: 'TEMPORARY__32byte_ctrl_plane_key'
+irods::ctrl_plane_port: '1248'
+irods::irods_home: '/var/lib/irods'
+irods::default_vault_dir: '/var/lib/irods/Vault'
+irods::provider_admin_pass: 'rods'
+irods::provider_admin_user: 'rods'
+irods::provider_server: 'localhost'
+irods::provider_server_zone: 'tempZone'
+irods::schema_base_uri: 'file:///var/lib/irods/configuration_schemas'
+irods::srv_acct: 'irods' # file & process owner
+irods::srv_grp: 'irods' # file & process group
+irods::srv_negotiation_key: 'TEMPORARY_32byte_negotiation_key'
+irods::srv_port: '1247'
+irods::srv_port_range_start: '20000'
+irods::srv_port_range_end: '20199'
+irods::srv_zone_key: 'TEMPORARY_zone_key'
+irods::use_ssl: false
+irods::ssl_certificate_chain_file_source: ''
+irods::ssl_certificate_key_file_source: ''
+irods::core_version: '4.2.0'
+irods::install_dev_pkgs: true
