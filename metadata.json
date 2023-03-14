@@ -8,7 +8,30 @@
   "project_page": "https://github.com/EuPathDB/puppet-irods",
   "issues_url": "https://github.com/EuPathDB/puppet-irods/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
-  ]
-}
-
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 1.0.0"
+    }
+  "operatingsystem_support": [
+      {
+        "operatingsystem": "RedHat",
+        "operatingsystemrelease": [
+          "7",
+          "8",
+        ]
+      },
+      {
+        "operatingsystem": "AlmaLinux",
+        "operatingsystemrelease": [
+          "7",
+          "8",
+        ]
+      }
+    ],
+    "requirements": [
+      {
+        "name": "puppet",
+        "version_requirement": ">= 5.5.10 < 8.0.0"
+      }
+    ],
+  }
