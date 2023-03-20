@@ -19,7 +19,7 @@ class irods::params inherits irods::globals {
 
   # install and use RENCI package repository
   # (only available for iRODS >= 4.2)
-  $manage_repo = true
+  $manage_repo = false
 
   # Only one database plugin can be installed at a time. See the
   # irods::lib::install define type for how this list is used to ensure one of
