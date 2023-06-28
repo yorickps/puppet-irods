@@ -5,7 +5,7 @@ class irods::client (
 ) inherits irods::params {
 
   irods::lib::install { 'irods-icommands':
-    packages                => 'irods-icommands',
+    packages                => ['irods-icommands', 'irods-runtime'],
     core_version            => $core_version,
     package_install_options => $package_install_options,
   }
