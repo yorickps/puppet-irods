@@ -3,21 +3,21 @@
 # installed at at time - handling cases, for example, when an
 # irods::client node is changed to a irods::resource node.
 define irods::lib::install (
-  $packages                = undef,
-  $engine_plugin_packages  = [],
-  $core_version            = $irods::params::core_version,
-  $engine_plugin_release   = $irods::params::engine_plugin_release,
-  $manage_repo             = $irods::params::manage_repo,
-  $package_install_options = '',
+  Array $packages               = undef,
+  Array $engine_plugin_packages = [],
+  $core_version                 = $irods::params::core_version,
+  $engine_plugin_release        = $irods::params::engine_plugin_release,
+  $manage_repo                  = $irods::params::manage_repo,
+  $package_install_options      = '',
 ) {
 
-  if is_array($packages) {
+  if $packages {
     $install_pkgs = $packages
   } else {
     $install_pkgs = [$packages]
   }
 
-  if is_array($engine_plugin_packages) {
+  if $engine_plugin_packages {
     $install_engine_plugins = $engine_plugin_packages
   } else {
     $install_engine_plugins = [$engine_plugin_packages]
